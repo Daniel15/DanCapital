@@ -9,7 +9,7 @@ import { transformToForm } from '@/utils';
 import { BrandingState, BrandingTemplateValues } from './types';
 import { DRAWERS } from '@/constants/drawers';
 
-const commonExcludedAttrs = ['templateName', 'companyLogoUri'];
+const commonExcludedAttrs = ['templateName', 'companyLogoUri', 'companyLogoUrl'];
 
 export const transformToEditRequest = <T extends BrandingTemplateValues>(
   values: T,
@@ -49,6 +49,7 @@ export const useBrandingTemplateFormInitialValues = <
   const brandingAttributes = {
     templateName: pdfTemplate?.templateName,
     companyLogoUri: pdfTemplate?.companyLogoUri,
+    companyLogoUrl: pdfTemplate?.companyLogoUrl,
     ...pdfTemplate?.attributes,
   };
   return {

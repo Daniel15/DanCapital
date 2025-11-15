@@ -50,7 +50,7 @@ export class PdfTemplate extends TenantModel {
    * Virtual attributes.
    */
   static get virtualAttributes() {
-    return ['companyLogoUri'];
+    return ['companyLogoUri', 'companyLogoUrl'];
   }
 
   /**
@@ -58,9 +58,21 @@ export class PdfTemplate extends TenantModel {
    * @returns {string}
    */
   get companyLogoUri() {
+    // Prefer direct URL over S3 key
+    if (this.attributes?.companyLogoUrl) {
+      return this.attributes.companyLogoUrl;
+    }
     return this.attributes?.companyLogoKey
       ? getUploadedObjectUri(this.attributes.companyLogoKey)
       : '';
+  }
+
+  /**
+   * Retrieves the company logo url if set.
+   * @returns {string}
+   */
+  get companyLogoUrl() {
+    return this.attributes?.companyLogoUrl || '';
   }
 
   /**
