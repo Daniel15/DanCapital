@@ -61,7 +61,7 @@ export function CompanyLogoUpload({
   const [initialLocalPreview, setInitialLocalPreview] = useState<string | null>(
     initialPreview || null,
   );
-  const [useUrlInput, setUseUrlInput] = useState<boolean>(false);
+  const [useUrlInput, setUseUrlInput] = useState<boolean>(!!logoUrl && !initialPreview);
   const [urlValue, setUrlValue] = useState<string>(logoUrl || '');
 
   const openRef = useRef<() => void>(null);
