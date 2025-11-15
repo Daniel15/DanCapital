@@ -25,7 +25,11 @@ const initialValues = {
 const validationSchema = Yup.object({
   logoKey: Yup.string().optional(),
   logoUri: Yup.string().optional(),
-  logoUrl: Yup.string().url('Must be a valid URL').optional(),
+  logoUrl: Yup.string()
+    .transform((value) => (value === '' ? null : value))
+    .url('Must be a valid URL')
+    .nullable()
+    .optional(),
   primaryColor: Yup.string().required('Primary color is required'),
 });
 
