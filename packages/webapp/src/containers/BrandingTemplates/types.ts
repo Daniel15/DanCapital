@@ -6,6 +6,7 @@ export interface BrandingTemplateValues {
   // Company logo
   companyLogoKey?: string;
   companyLogoUri?: string;
+  companyLogoUrl?: string;
 }
 
 export interface BrandingState extends ElementPreviewState {
@@ -14,6 +15,7 @@ export interface BrandingState extends ElementPreviewState {
 
   companyLogoKey: string;
   companyLogoUri: string;
+  companyLogoUrl: string;
 
   primaryColor: string;
 }

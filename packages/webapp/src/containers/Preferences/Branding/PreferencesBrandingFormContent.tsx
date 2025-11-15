@@ -48,12 +48,20 @@ export function BrandingCompanyLogoUpload() {
   return (
     <CompanyLogoUpload
       initialPreview={values?.logoUri}
+      logoUrl={values?.logoUrl}
       onChange={(file) => {
         const imageUrl = file ? URL.createObjectURL(file) : '';
 
         setFieldValue('_logoFile', file);
         setFieldValue('logoUri', imageUrl);
         setFieldValue('logoKey', '');
+        setFieldValue('logoUrl', '');
+      }}
+      onUrlChange={(url) => {
+        setFieldValue('logoUrl', url);
+        setFieldValue('logoUri', url);
+        setFieldValue('logoKey', '');
+        setFieldValue('_logoFile', null);
       }}
       classNames={{
         root: styles.fileUploadRoot,

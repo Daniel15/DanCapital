@@ -18,12 +18,14 @@ import { usePreferencesBrandingBoot } from './PreferencesBrandingBoot';
 const initialValues = {
   logoKey: '',
   logoUri: '',
+  logoUrl: '',
   primaryColor: '',
 };
 
 const validationSchema = Yup.object({
   logoKey: Yup.string().optional(),
   logoUri: Yup.string().optional(),
+  logoUrl: Yup.string().url('Must be a valid URL').optional(),
   primaryColor: Yup.string().required('Primary color is required'),
 });
 
