@@ -53,14 +53,14 @@ export const PreferencesBrandingForm = ({
     values: PreferencesBrandingFormValues,
     { setSubmitting }: FormikHelpers<PreferencesBrandingFormValues>,
   ) => {
-    const _values = { ...values };
+    const _values = { ...values, logoUrl: undefined as string | undefined };
 
     const handleError = (message: string) => {
       AppToaster.show({ intent: Intent.DANGER, message });
       setSubmitting(false);
     };
     // Start upload the company logo file if it is presented.
-    if (values._logoFile) {
+    if (values._logoFile instanceof File) {
       const formData = new FormData();
       const key = Date.now().toString();
 
@@ -79,6 +79,8 @@ export const PreferencesBrandingForm = ({
         setSubmitting(false);
         return;
       }
+    } else if (typeof values._logoFile === 'string') {
+      _values.logoUrl = values._logoFile;
     }
     // Exclude all the private props that starts with _.
     const excludedPrivateValues = excludePrivateProps(_values);

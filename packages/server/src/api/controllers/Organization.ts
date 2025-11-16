@@ -99,6 +99,7 @@ export default class OrganizationController extends BaseController {
       // # Branding
       check('primary_color').optional({ nullable: true }).isHexColor().trim(),
       check('logo_key').optional({ nullable: true }).isString().trim(),
+      check('logo_url').optional({ nullable: true }).isURL().trim(),
 
       check('tax_number').optional({ nullable: true }).isString().trim(),
     ];

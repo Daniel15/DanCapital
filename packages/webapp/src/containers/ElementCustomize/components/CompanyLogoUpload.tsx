@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useRef, useState } from 'react';
 import clsx from 'classnames';
 import { Button, Intent } from '@blueprintjs/core';
@@ -7,19 +6,20 @@ import { Dropzone, DropzoneProps } from '@/components/Dropzone';
 import { MIME_TYPES } from '@/components/Dropzone/mine-types';
 import { useUncontrolled } from '@/hooks/useUncontrolled';
 import styles from './CompanyLogoUpload.module.scss';
+import { type FileOrURL } from '@/containers/Preferences/Branding/_types';
 
 export interface CompanyLogoUploadProps {
   /** Initial preview uri. */
   initialPreview?: string;
 
   /** The initial file object for uploading */
-  initialValue?: File;
+  initialValue?: FileOrURL;
 
   /** The current file object for uploading */
-  value?: File;
+  value?: FileOrURL;
 
   /** Function called when the file is changed */
-  onChange?: (file: File) => void;
+  onChange?: (data: FileOrURL) => void;
 
   /** Props for the Dropzone component */
   dropzoneProps?: DropzoneProps;
@@ -44,7 +44,7 @@ export function CompanyLogoUpload({
   title = 'Drag images here or click to select files',
   classNames,
 }: CompanyLogoUploadProps) {
-  const [localValue, handleChange] = useUncontrolled<File | null>({
+  const [localValue, handleChange] = useUncontrolled<FileOrURL | null>({
     value,
     initialValue,
     finalValue: null,
@@ -60,47 +60,75 @@ export function CompanyLogoUpload({
     handleChange(null);
     setInitialLocalPreview(null);
   };
-  const imagePreviewUrl = localValue
-    ? URL.createObjectURL(localValue)
-    : initialLocalPreview || '';
+
+  let imagePreviewUrl;
+  if (localValue) {
+    imagePreviewUrl =
+      localValue instanceof File ? URL.createObjectURL(localValue) : localValue;
+  } else {
+    imagePreviewUrl = initialLocalPreview || '';
+  }
+
+  const fileURLField = (
+    <input
+      className="bp4-input"
+      type="text"
+      placeholder="Paste URL"
+      value={typeof localValue === 'string' ? localValue : ''}
+      onChange={(evt) => handleChange(evt.target.value)}
+    />
+  );
 
   return (
-    <Dropzone
-      onDrop={(files) => handleChange(files[0])}
-      onReject={(files) => console.log('rejected files', files)}
-      maxSize={5 * 1024 ** 2}
-      accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-      classNames={{ root: clsx(styles?.root, classNames?.root), content: styles.dropzoneContent }}
-      activateOnClick={false}
-      openRef={openRef}
-      {...dropzoneProps}
-    >
-      {imagePreviewUrl ? (
-        <span>
-          <img src={imagePreviewUrl} alt="" className={styles.previewImage} />
-          <Button
-            minimal
-            intent={Intent.DANGER}
-            onClick={handleRemove}
-            icon={<Icon icon={'smallCross'} iconSize={16} />}
-            className={styles?.removeButton}
-          />
-        </span>
-      ) : (
-        <Stack spacing={10} align="center" className={styles.contentPrePreview}>
-          {title && <span className={styles.title}>{title}</span>}
-          <Button
-            intent="none"
-            onClick={() => openRef.current?.()}
-            style={{ pointerEvents: 'all' }}
-            minimal
-            outlined
-            small
+    <>
+      {/* @ts-ignore */}
+      <Dropzone
+        onDrop={(files) => handleChange(files[0])}
+        onReject={(files) => console.log('rejected files', files)}
+        maxSize={5 * 1024 ** 2}
+        accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
+        classNames={{
+          root: clsx(styles?.root, classNames?.root),
+          content: styles.dropzoneContent,
+        }}
+        activateOnClick={false}
+        openRef={openRef}
+        {...dropzoneProps}
+      >
+        {imagePreviewUrl ? (
+          <span>
+            <img src={imagePreviewUrl} alt="" className={styles.previewImage} />
+            <Button
+              minimal
+              intent={Intent.DANGER}
+              onClick={handleRemove}
+              icon={<Icon icon={'smallCross'} iconSize={16} />}
+              className={styles?.removeButton}
+            />
+            {typeof localValue === 'string' && fileURLField}
+          </span>
+        ) : (
+          <Stack
+            spacing={10}
+            align="center"
+            className={styles.contentPrePreview}
           >
-            {'Upload File'}
-          </Button>
-        </Stack>
-      )}
-    </Dropzone>
+            {title && <span className={styles.title}>{title}</span>}
+            <Button
+              intent="none"
+              onClick={() => openRef.current?.()}
+              style={{ pointerEvents: 'all' }}
+              minimal
+              outlined
+              small
+            >
+              {'Upload File'}
+            </Button>
+            or
+            {fileURLField}
+          </Stack>
+        )}
+      </Dropzone>
+    </>
   );
 }

@@ -18,6 +18,7 @@ export default class TenantMetadata extends BaseModel {
   fiscalYear!: string;
   primaryColor!: string;
   logoKey!: string;
+  logoUrl!: string;
   address!: Record<string, any>;
 
   /**
@@ -39,6 +40,7 @@ export default class TenantMetadata extends BaseModel {
         fiscalYear: { type: 'string', maxLength: 255 },
         primaryColor: { type: 'string', maxLength: 7 }, // Assuming hex color code
         logoKey: { type: 'string', maxLength: 255 },
+        logoUrl: { type: 'string', maxLength: 2048 },
         address: { type: 'object' },
       },
     };
@@ -63,6 +65,10 @@ export default class TenantMetadata extends BaseModel {
    * @returns {string | null}
    */
   public get logoUri() {
+    // Prefer direct URL over S3 key
+    if (this.logoUrl != null && this.logoUrl !== '') {
+      return this.logoUrl;
+    }
     return this.logoKey ? getUploadedObjectUri(this.logoKey) : null;
   }
 

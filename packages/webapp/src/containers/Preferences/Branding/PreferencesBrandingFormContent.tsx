@@ -49,7 +49,10 @@ export function BrandingCompanyLogoUpload() {
     <CompanyLogoUpload
       initialPreview={values?.logoUri}
       onChange={(file) => {
-        const imageUrl = file ? URL.createObjectURL(file) : '';
+        let imageUrl = '';
+        if (file) {
+          imageUrl = file instanceof File ? URL.createObjectURL(file) : file;
+        }
 
         setFieldValue('_logoFile', file);
         setFieldValue('logoUri', imageUrl);

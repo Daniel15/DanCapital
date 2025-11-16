@@ -37,6 +37,7 @@ export interface IOrganizationUpdateDTO {
   taxNumber?: string;
   primaryColor?: string;
   logoKey?: string;
+  logoUrl?: string;
   address?: OrganizationAddressDTO;
 }
 
