@@ -50,7 +50,7 @@ export class PdfTemplate extends TenantModel {
    * Virtual attributes.
    */
   static get virtualAttributes() {
-    return ['companyLogoUri', 'companyLogoUrl'];
+    return ['companyLogoUri'];
   }
 
   /**
@@ -65,14 +65,6 @@ export class PdfTemplate extends TenantModel {
     return this.attributes?.companyLogoKey
       ? getUploadedObjectUri(this.attributes.companyLogoKey)
       : '';
-  }
-
-  /**
-   * Retrieves the company logo url if set.
-   * @returns {string}
-   */
-  get companyLogoUrl() {
-    return this.attributes?.companyLogoUrl || '';
   }
 
   /**

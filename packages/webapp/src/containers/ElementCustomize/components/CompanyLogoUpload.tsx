@@ -115,66 +115,76 @@ export function CompanyLogoUpload({
         openRef={openRef}
         {...dropzoneProps}
       >
-        {imagePreviewUrl ? (
-          <span>
-            <img src={imagePreviewUrl} alt="" className={styles.previewImage} />
-            <Button
-              minimal
-              intent={Intent.DANGER}
-              onClick={handleRemove}
-              icon={<Icon icon={'smallCross'} iconSize={16} />}
-              className={styles?.removeButton}
-            />
-          </span>
-        ) : (
-          <Stack spacing={10} align="center" className={styles.contentPrePreview}>
-            {!useUrlInput ? (
-              <>
-                {title && <span className={styles.title}>{title}</span>}
-                <Button
-                  intent="none"
-                  onClick={() => openRef.current?.()}
-                  style={{ pointerEvents: 'all' }}
-                  minimal
-                  outlined
-                  small
-                >
-                  {'Upload File'}
-                </Button>
-                <Button
-                  intent="none"
-                  onClick={handleToggleMode}
-                  style={{ pointerEvents: 'all' }}
-                  minimal
-                  small
-                >
-                  {'Or enter URL'}
-                </Button>
-              </>
-            ) : (
-              <>
-                <input
-                  type="text"
-                  placeholder="Enter logo URL"
-                  value={urlValue}
-                  onChange={handleUrlInputChange}
-                  className="bp4-input"
-                  style={{ width: '100%', pointerEvents: 'all' }}
-                />
-                <Button
-                  intent="none"
-                  onClick={handleToggleMode}
-                  style={{ pointerEvents: 'all' }}
-                  minimal
-                  small
-                >
-                  {'Or upload file'}
-                </Button>
-              </>
-            )}
-          </Stack>
-        )}
+        <Stack spacing={10} align="center" className={styles.contentPrePreview}>
+          {useUrlInput ? (
+            <>
+              <input
+                type="text"
+                placeholder="Enter logo URL"
+                value={urlValue}
+                onChange={handleUrlInputChange}
+                className="bp4-input"
+                style={{ width: '100%', pointerEvents: 'all' }}
+              />
+              <Button
+                intent="none"
+                onClick={handleToggleMode}
+                style={{ pointerEvents: 'all' }}
+                minimal
+                small
+              >
+                {'Or upload file'}
+              </Button>
+            </>
+          ) : imagePreviewUrl ? (
+            <span>
+              <img src={imagePreviewUrl} alt="" className={styles.previewImage} />
+              <Button
+                minimal
+                intent={Intent.DANGER}
+                onClick={handleRemove}
+                icon={<Icon icon={'smallCross'} iconSize={16} />}
+                className={styles?.removeButton}
+              />
+            </span>
+          ) : (
+            <>
+              {title && <span className={styles.title}>{title}</span>}
+              <Button
+                intent="none"
+                onClick={() => openRef.current?.()}
+                style={{ pointerEvents: 'all' }}
+                minimal
+                outlined
+                small
+              >
+                {'Upload File'}
+              </Button>
+              <Button
+                intent="none"
+                onClick={handleToggleMode}
+                style={{ pointerEvents: 'all' }}
+                minimal
+                small
+              >
+                {'Or enter URL'}
+              </Button>
+            </>
+          )}
+        </Stack>
       </Dropzone>
+      {useUrlInput && imagePreviewUrl && (
+        <div style={{ marginTop: '10px' }}>
+          <img src={imagePreviewUrl} alt="" className={styles.previewImage} />
+          <Button
+            minimal
+            intent={Intent.DANGER}
+            onClick={handleRemove}
+            icon={<Icon icon={'smallCross'} iconSize={16} />}
+            style={{ marginLeft: '10px' }}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -49,7 +49,7 @@ export const useBrandingTemplateFormInitialValues = <
   const brandingAttributes = {
     templateName: pdfTemplate?.templateName,
     companyLogoUri: pdfTemplate?.companyLogoUri,
-    companyLogoUrl: pdfTemplate?.companyLogoUrl,
+    companyLogoUrl: pdfTemplate?.attributes?.companyLogoUrl,
     ...pdfTemplate?.attributes,
   };
   return {
