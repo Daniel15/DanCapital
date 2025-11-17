@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import BodyClassName from 'react-body-classname';
 import { Box } from '@/components';
@@ -12,8 +11,6 @@ export default function PaymentPortalPage({
 }: {
   children: ReactNode;
 }) {
-  const { linkId } = useParams<{ linkId: string }>();
-
   return (
     <BodyClassName className={styles.rootBodyPage}>
       <>
